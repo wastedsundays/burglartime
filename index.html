@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burglar Time!</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/6ea718c346.js" crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles/style.css"></link>
+
+</head>
+<body>
+    <div id="game-wrapper" class="game-wrapper">   
+        <div id="game-area">
+        <!-- Splash Screen  -->
+
+        <div id="splash-screen" class="screen">
+            <img src="images/burglarTimeLogo.png">
+
+            <div id="splash-controls" class="center-text">
+
+                <h3>Enter Your Name:</h3>
+                    <input id="form-text" type="text" placeholder="Player 1" autocomplete="off"/>
+                    <h3>Select Your Difficulty Level:</h3>
+                    <div class="buttons text-center">
+                        <button class="btn btn-success" id="easy-btn" type="submit">Petty Thief</button>
+                        <button class="btn btn-warning" id="med-btn" type="submit">Sticky Fingers</button>
+                        <button class="btn btn-danger" id="hard-btn" type="submit">Hardened Criminal</button>
+                    </div>
+
+                
+            </div>
+        </div>
+
+
+        <!-- Game board screen -->
+        <div id="game-screen" class="screen">
+            <div class="scoreboard" id="scoreboard">
+                <div class="player-one-scoreboard player-scoreboard" id="player-one-scoreboard">    
+                    <p><span id="player-name">Player One:</span><span id="p1score">0</span></p>
+                </div>
+
+                <div class="timer center-text" id="timer">
+                    <p><span id="seconds">90</span></p>
+                </div>
+                
+                <div class="high-scoreboard player-scoreboard" id="high-scoreboard">    
+                    <p>Hi Score: <span id="hi-score">2460</span></p>
+                </div>
+
+                <div><button class="btn btn-success btn-sm" type="button" id="mute-btn" ><i class="fas fa-volume-mute"></i></button></div>
+                <div><button class="btn btn-success btn-sm" id="game-control-btn" type="submit">Pause</button></div>
+                <div><button class="btn btn-success btn-sm" id="game-help-btn" type="submit">Help</button></div>
+                <div class="status-display center-text"><p  id="status-display">game status</p></div>
+                <div><button class="btn btn-success btn-sm" id="game-quit-btn" type="submit">Quit</button></div>
+                <div><button class="btn btn-success btn-sm" id="game-reset-btn" type="submit">Reset</button></div>
+                <div class="center-text level-indicator"><p>1</p></div>
+            </div> 
+        
+        
+            <div class="grid"></div>
+            <!-- Considered adding a boss button -->
+            <!-- <div><button class="btn btn-danger btn-sm" id="boss-btn" type="submit">Excessive Force</button></div>     -->
+
+                <audio id="audio-coin" loop="false">
+                    <source src="sounds/pickupCoin.wav" type="audio/wav">
+                </audio>
+                <audio id="audio-bill" loop="false">
+                    <source src="sounds/powerUp.wav" type="audio/wav">
+                </audio>
+                <audio id="audio-music" loop="false">
+                    <source src="sounds/gameMusic.mp3" type="audio/mp3">
+                </audio>
+                <audio id="audio-captured" loop="false">
+                    <source src="sounds/siren.wav" type="audio/wav">
+                </audio>
+                <audio id="win-music" loop="false">
+                    <source src="sounds/levelwin.wav" type="audio/wav">
+                </audio>
+            </div>
+    
+    </div> 
+
+
+        <!-- Level Recap Screen  -->
+
+        <div id="recap-screen" class="screen">
+            <h3>Burglar Time</h3>
+            <p id="recap-message">Level Recap Screen</p>
+
+            <table>
+
+                <thead>
+                  <tr>
+                    <td>Your Score</td>
+                    <td id="level-score">0</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Time Bonus</td>
+                    <td id="time-left">0</td>
+                  </tr>
+                  <tr>
+                    <td>Total Score</td>
+                    <td id="new-total-score">0</td>
+                  </tr>
+                </tbody>
+                </table>
+    
+            <div class="buttons text-center">
+                <button class="btn btn-success" id="continue-btn" type="submit">Continue</button>
+            </div>
+
+        </div>
+
+        <!-- game end screen (for caught/time expired) -->
+        <div id="end-screen" class="screen">
+            <h3>Busted!</h3>
+            <p>You <em>almost</em> got away with $<span id="final-score">0</span></p>
+
+                <div class="buttons text-center">
+                    <button class="btn btn-success" id="retry-btn" type="submit">Retry?</button>
+                    <button class="btn btn-success" id="quitgame-btn" type="submit">Quit</button>
+                </div>
+
+        </div>
+
+    
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+    <script src="app.js" charset=""utf-8></script>
+
+</body>
+</html>

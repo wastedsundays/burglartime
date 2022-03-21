@@ -1,0 +1,161 @@
+body {
+  width: 1200px;
+  font-family: "Press Start 2P", cursive;
+  color: gold;
+  margin: 0 auto;
+  background-image: url("../images/Untitled-1.jpg");
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+h3 {
+  font-size: 1rem;
+  padding-top: 3rem;
+}
+#splash-screen button {
+  font-size: 75%;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.game-wrapper {
+  width: 950px;
+  height: 100vh;
+  margin: 0 auto;
+  background-color: black;
+}
+
+.game-area {
+  margin: auto;
+}
+
+.scoreboard {
+  font-size: 75%;
+  height: 80px;
+  /* margin: 20px 38px 0 38px; */
+  padding: 5px 16px 0 16px;
+  display: grid;
+  grid-template-columns: 32px 118px 150px auto 150px 118px 32px;
+  grid-template-rows: 35px auto;
+}
+
+.scoreboard-buttons button {
+  font-size: 65%;
+}
+
+.scoreboard p {
+  margin-top: 0.5rem;
+}
+
+.player-one-scoreboard {
+  grid-column: 1 / 4;
+}
+
+.high-scoreboard {
+  grid-column: 5 / 8;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  /* width: 768px; */
+  /* height: 504px; */
+  width: 928px;
+  height: 609px;
+  border: 1 px solid black;
+  margin: 0 auto;
+}
+
+.grid div {
+  /* width: 24px;
+  height: 24px; */
+  width: 29px;
+  height: 29px;
+}
+
+.coin {
+  background-color: yellow;
+  border: 11px solid black;
+  box-sizing: border-box;
+  border-radius: 50%;
+}
+
+.wall {
+  background-image: url(../images/brick.png);
+}
+
+.wall-9 {
+  background-image: url(../images/brick.png);
+  transform: rotate(90deg);
+}
+
+.dollar-bill {
+  background-color: limegreen;
+  border-top: 8px solid black;
+  border-bottom: 8px solid black;
+  border-left: 3px solid black;
+  border-right: 3px solid black;
+  box-sizing: border-box;
+}
+
+.vault-door {
+  background-color: orange;
+}
+
+.burglar {
+  background-color: red;
+  border-radius: 0;
+  border: 0;
+  background-image: url("../images/burglar.png");
+  z-index: 10;
+  /* background-color: #000; */
+}
+
+.barbrady {
+  /* background-color: goldenrod; */
+  border-radius: 0;
+  border: 0;
+  background-image: url("../images/barbrady.jpg");
+  border: 0px;
+  z-index: 100;
+}
+
+.wiggum {
+  border-radius: 0;
+  background-color: blue;
+  background-image: url("../images/barbrady.jpg");
+  border: 0px;
+  z-index: 99;
+}
+
+.drebin {
+  border-radius: 0;
+  background-color: wheat;
+  background-image: url("../images/barbrady.jpg");
+  border: 0px;
+  z-index: 98;
+}
+
+.kimble {
+  border-radius: 0;
+  background-color: red;
+  background-image: url("../images/barbrady.jpg");
+  border: 0px;
+  z-index: 97;
+}
+
+.vault-open {
+  background-color: white;
+}
+
+table {
+  table-layout: auto;
+  width: 370px;
+  border-collapse: collapse;
+}
+
+table td:nth-child(2) {
+  text-align: end;
+}
