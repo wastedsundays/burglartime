@@ -199,7 +199,7 @@
     })  
 
     $('#hard-btn').on('click',() => {
-        game.difficulty = 2.5;
+        game.difficulty = 2.2;
         game.setPlayerName();
         game.switchScreen('#game-screen');
         setTimeout(game.startGame,3000);
