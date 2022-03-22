@@ -282,10 +282,10 @@
       $('#game-control-btn').on('click',() => {
           if (game.isRunning === true) {
               game.pauseGame();
-              $("#game-control-btn").html("Resume");
+              $("#game-control-btn").html("<i class='fas fa-play'></i>");
           } else {
               game.resumeGame();
-              $("#game-control-btn").html("Pause");
+              $("#game-control-btn").html("<i class='fas fa-pause'></i>");
           }
       })
 
