@@ -332,6 +332,10 @@
       game.previousScreen = '#game-screen';
       })
 
+      $('#game-quit-btn').on('click',() => {
+          game.init();
+      })
+
     // A bad idea :-)
 
     //   $('#boss-btn').on('click',() => {

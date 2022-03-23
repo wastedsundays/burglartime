@@ -111,6 +111,7 @@ h3 {
   /* margin: 20px 38px 0 38px; */
   padding: 5px 16px 0 16px;
   display: grid;
+  /* justify-items: center; */
   grid-template-columns: 32px 118px 150px auto 150px 118px 32px;
   grid-template-rows: 35px auto;
 }
