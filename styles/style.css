@@ -50,9 +50,17 @@ h3 {
 }
 
 #help-screen {
-  font-size: 70%;
-  width: 80%;
+  font-size: 80%;
+  width: 90%;
   margin: 1rem auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow: auto;
+  height: 95vh;
+}
+
+#help-screen::-webkit-scrollbar {
+  display: none;
 }
 
 #help-screen p {
@@ -60,8 +68,25 @@ h3 {
   color: white;
 }
 
+#moving-around {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#moving-around img {
+  height: 50px;
+  width: 50px;
+}
+
+#moving-around p {
+  padding-left: 0.5rem;
+  padding-right: 2rem;
+}
 #help-screen-close-button {
   float: right;
+  position: sticky;
+  top: 0;
 }
 
 .center-text {
@@ -73,6 +98,7 @@ h3 {
   height: 100vh;
   margin: 0 auto;
   background-color: rgb(16, 16, 16);
+  overflow: hidden;
 }
 
 .game-area {
