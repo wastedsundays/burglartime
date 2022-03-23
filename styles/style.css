@@ -112,7 +112,7 @@ h3 {
   padding: 5px 16px 0 16px;
   display: grid;
   /* justify-items: center; */
-  grid-template-columns: 32px 118px 150px auto 150px 118px 32px;
+  grid-template-columns: 60px 120px 120px auto 120px 120px 60px;
   grid-template-rows: 35px auto;
 }
 
@@ -130,6 +130,7 @@ h3 {
 
 .high-scoreboard {
   grid-column: 5 / 8;
+  text-align: right;
 }
 
 .grid {

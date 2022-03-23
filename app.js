@@ -42,7 +42,7 @@
             //reset the status display on scoreboard
             statusDisplay.innerHTML = "";
             //sets level indicator on scoreboard to 1
-            $('.level-indicator').html(game.currentLevel);
+            $('.level-indicator').html(`Lv: ${game.currentLevel}`);
             game.counter = 90;
             game.updateClock();
             game.playerScore = 0;  
@@ -273,7 +273,7 @@
         createBoard();
         squares[burglarCurrentIndex].classList.add('burglar');
         statusDisplay.innerHTML = "";
-        $('.level-indicator').html(game.currentLevel);
+        $('.level-indicator').html(`Lv: ${game.currentLevel}`);
         game.counter = 90;
         game.updateClock();
         game.playerScore = game.totalScore;  
