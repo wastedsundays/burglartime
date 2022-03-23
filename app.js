@@ -187,7 +187,6 @@
                 soundCoin.muted = true;
                 soundWin.muted = true;
                 soundCapture.muted = true;
-                soundDoor.muted = true;
                 document.getElementById("mute-btn").setAttribute("class","btn btn-warning btn-sm");
             } else {
                 soundPriest.muted = false;
@@ -195,7 +194,6 @@
                 soundCoin.muted = false;
                 soundWin.muted = false;
                 soundCapture.muted = false;
-                soundDoor.muted = false;
                 document.getElementById("mute-btn").setAttribute("class","btn btn-success btn-sm");
             }
         },
@@ -219,6 +217,7 @@
     const soundBill = document.getElementById('audio-bill');
     const soundPriest = document.getElementById('audio-music');
     const soundWin = document.getElementById('win-music');
+    const soundCapture = document.getElementById('audio-captured');
     const formText = document.querySelector("#form-text");
     const grid = document.querySelector('.grid');
     const plyrOneDisplay = document.getElementById('p1score');
