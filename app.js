@@ -20,6 +20,7 @@
         difficulty: 1,
         currentScreen: "#splash-screen",
         currentLevel: 1,
+        previousScreen: '',
 
 
         init: function() {
@@ -49,8 +50,9 @@
             //reset the timer on the game music 
             soundPriest.currentTime = 0;
             game.updateHiScore();
-            game.switchScreen('#splash-screen');   
-            game.muteButton();  
+            game.switchScreen('#splash-screen');
+            game.unMute();   
+
 
         },
 
@@ -79,6 +81,7 @@
             soundPriest.play();
         },
 
+        //starts the clock
         startTimer: function() {
             if(game.isRunning === false) {
                 game.isRunning = true;
@@ -87,6 +90,7 @@
             } return
         },
 
+        //sets the scoreboard with the player name input. If blank, it defaults to "Player 1: "    
         setPlayerName: function() {
             game.playerName = formText.value;
             if(game.playerName.length >=1){
@@ -110,6 +114,7 @@
         checkExpired: function() {
             if (game.counter === 0) {
                 game.pauseGame();
+                soundCapture.play();
                 setTimeout(function(){statusDisplay.innerHTML = 'Time Expired'},100)
                 document.getElementById('final-score').innerHTML = game.playerScore;
                 setTimeout(function(){game.switchScreen('#end-screen')},3000);
@@ -121,7 +126,7 @@
             if (game.coinsCollected === totalCoins && game.billsCollected === totalBills) {
                 squares[239].classList.remove('vault-door')
                 squares[239].classList.add('vault-open')
-            }
+             }
         },
 
         //checks if board is cleared AND burglar is back in the vault door
@@ -142,6 +147,7 @@
             document.removeEventListener('keydown',moveBurglar)
             clearInterval(game.intervalId);
             soundPriest.pause();
+            statusDisplay.innerHTML = "paused";
         },
         
         //resumes everything (cops, key presses, music, timer)
@@ -150,6 +156,7 @@
             document.addEventListener('keydown',moveBurglar);
             game.startTimer();
             soundPriest.play();
+            statusDisplay.innerHTML = "";
         },
 
         //check for captured - called in both the moveCop and moveBurglar functions
@@ -173,12 +180,14 @@
         },
 
         muteButton: function() {
+            //mutes all the audio elements, or unmutes them, depending on current state.
             if (soundPriest.muted === false) {
                 soundPriest.muted = true;
                 soundBill.muted = true;
                 soundCoin.muted = true;
                 soundWin.muted = true;
                 soundCapture.muted = true;
+                soundDoor.muted = true;
                 document.getElementById("mute-btn").setAttribute("class","btn btn-warning btn-sm");
             } else {
                 soundPriest.muted = false;
@@ -186,8 +195,19 @@
                 soundCoin.muted = false;
                 soundWin.muted = false;
                 soundCapture.muted = false;
+                soundDoor.muted = false;
                 document.getElementById("mute-btn").setAttribute("class","btn btn-success btn-sm");
             }
+        },
+
+        unMute: function(){
+            soundPriest.muted = false;
+            soundBill.muted = false;
+            soundCoin.muted = false;
+            soundWin.muted = false;
+            soundCapture.muted = false;
+            soundDoor.muted = false;
+            document.getElementById("mute-btn").setAttribute("class","btn btn-success btn-sm");
         }
     
         
@@ -195,8 +215,6 @@
     }
     //end of game
 
-
-    const soundCapture = document.getElementById('audio-captured');
     const soundCoin = document.getElementById('audio-coin');
     const soundBill = document.getElementById('audio-bill');
     const soundPriest = document.getElementById('audio-music');
@@ -234,6 +252,17 @@
         game.switchScreen('#game-screen');
         setTimeout(game.startGame,3000);
     })  
+
+    $('#instructions-button').on('click',() => {
+        game.switchScreen('#help-screen');
+        game.previousScreen = '#splash-screen';
+    })  
+
+    $('#help-close-btn').on('click',() => {
+        game.switchScreen(game.previousScreen);
+    })  
+
+    
 
     $('#continue-btn').on('click',() => {
         game.pauseGame();
@@ -275,26 +304,7 @@
     })
 
     $('#quitgame-btn').on('click',() => {
-        // game.pauseGame();
-        // game.currentLevel = 1;
-        // game.coinsCollected = 0;
-        // game.billsCollected = 0;
-        // $('.grid').html("");
-        // squares = [];
-        // createBoard();
-        // burglarCurrentIndex=239;
-        // squares[burglarCurrentIndex].classList.add('burglar');
-        // statusDisplay.innerHTML = "";
-        // $('.level-indicator').html(game.currentLevel);
-        // game.counter = 90;
-        // game.updateClock();
-        // game.playerScore = 0;  
-        // plyrOneDisplay.innerHTML = game.playerScore;   
-        // soundPriest.currentTime = 0;
-        // game.updateHiScore();
-        // game.switchScreen('#splash-screen');
         game.init();
-
     })
 
 
@@ -302,7 +312,6 @@
 
       $('#mute-btn').on('click',()=> {
         game.muteButton();
-
       })
 
       $('#game-control-btn').on('click',() => {
@@ -313,6 +322,15 @@
               game.resumeGame();
               $("#game-control-btn").html("<i class='fas fa-pause'></i>");
           }
+      })
+
+      $('#game-help-btn').on('click',() => {
+        if(game.isRunning === true){
+            game.pauseGame();
+            $("#game-control-btn").html("<i class='fas fa-play'></i>");
+        }
+      game.switchScreen('#help-screen');
+      game.previousScreen = '#game-screen';
       })
 
     // A bad idea :-)
@@ -563,7 +581,7 @@
                 }
             }
         }
-
+            //gets the number of coins and bills on the current board (to allow the gates to be closed or opened)
             totalCoins = document.getElementsByClassName('coin').length
             totalBills = document.getElementsByClassName('dollar-bill').length
 
@@ -719,11 +737,12 @@ function createCops(){
                 soundBill.preLoad = true;
                 soundBill.loop = false;
                 soundPriest.preLoad = true;
-                soundPriest.loop = true;
+                soundPriest.loop = true;//this one is the music, so we want it to loop if the game goes on
                 soundCapture.preLoad = true;
                 soundCapture.loop = false;
                 soundWin.loop = false;
                 soundWin.preLoad = true;
+
                 
         
         // document.addEventListener('keydown',moveBurglar);

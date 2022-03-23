@@ -11,8 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
     <script src="https://kit.fontawesome.com/6ea718c346.js" crossorigin="anonymous"></script>
-    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous"> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="styles/style.css"></link>
 
@@ -24,6 +22,9 @@
 
         <div id="splash-screen" class="screen">
             <img src="images/burglarTimeLogo.png">
+            <div id="instructions-button">
+                <button type="button" class="btn btn-secondary">Instructions</button>
+            </div>
 
             <div id="splash-controls" class="center-text">
 
@@ -38,6 +39,25 @@
 
                 
             </div>
+
+            <div id="splash-footer">
+                <a href="https://www.adamh.ca"><p>&copy; 2022 Adam H.</p></a>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div id="help-screen" class="screen">
+            <div id="help-screen-close-button">
+                <button type="button" id="help-close-btn" class="btn btn-secondary">X</button>
+            </div>
+            <div id="game-description">
+                <h3>Burglar Time</h3>
+                <p>Congratulations on sneaking your way into the vault! There's plenty of $$$ to collect, but you have to get it all without getting caught by the guards patrolling the maze.</p>
+                <p>Oh, yeah - the vault door locked behind you, and it won't open up until you've collected all the coins and bills. Once you've collected everything, the vault door will open. Isn't technology strange?</p>
+                <p>Oh, yeah...ummm...yeah - if you don't do it in 90 seconds, you'll be trapped and the guards will get you. I'm sure you'll be fine!</p>
+                <p>Here's a helpful tip: when you collect the bill stacks, you'll set off an alarm that'll make the guards stop for a few seconds and try to track on their GPS devices. So use that to your advantage!</p>
+                <p>Anyway...be quick, but be careful!</p>
+            </div>  
         </div>
 
 
@@ -133,6 +153,8 @@
                 </div>
 
         </div>
+
+        <!-- game end screen (for winning)-->
 
     
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>

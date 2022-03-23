@@ -1,11 +1,23 @@
 body {
   width: 1200px;
   font-family: "Press Start 2P", cursive;
+  /* font-size: 75%; */
   color: gold;
   margin: 0 auto;
   background-image: url("../images/Untitled-1.jpg");
   background-size: 100%;
   background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+a {
+  color: gold;
+  text-decoration: none; /* no underline */
+}
+
+a:hover {
+  color: gold;
+  text-decoration: none;
 }
 
 h3 {
@@ -16,6 +28,42 @@ h3 {
   font-size: 75%;
 }
 
+#splash-footer {
+  position: fixed;
+  bottom: 0%;
+  text-align: center;
+  width: 950px;
+}
+
+#form-text {
+  background-color: rgb(16, 16, 16);
+  color: gold;
+  border: 1px solid gold;
+  padding: 2px 10px;
+}
+
+#instructions-button {
+  position: relative;
+  top: 12px;
+
+  text-align: center;
+}
+
+#help-screen {
+  font-size: 70%;
+  width: 80%;
+  margin: 0 auto;
+}
+
+#help-screen p {
+  margin-top: 2rem;
+  color: white;
+}
+
+#help-screen-close-button {
+  float: right;
+}
+
 .center-text {
   text-align: center;
 }
@@ -24,7 +72,7 @@ h3 {
   width: 950px;
   height: 100vh;
   margin: 0 auto;
-  background-color: black;
+  background-color: rgb(16, 16, 16);
 }
 
 .game-area {
@@ -64,7 +112,7 @@ h3 {
   /* height: 504px; */
   width: 928px;
   height: 609px;
-  border: 1 px solid black;
+  border: 1 px solid rgb(16, 16, 16);
   margin: 0 auto;
 }
 
@@ -77,7 +125,7 @@ h3 {
 
 .coin {
   background-color: yellow;
-  border: 11px solid black;
+  border: 11px solid rgb(16, 16, 16);
   box-sizing: border-box;
   border-radius: 50%;
 }
@@ -93,10 +141,10 @@ h3 {
 
 .dollar-bill {
   background-color: limegreen;
-  border-top: 8px solid black;
-  border-bottom: 8px solid black;
-  border-left: 3px solid black;
-  border-right: 3px solid black;
+  border-top: 8px solid rgb(16, 16, 16);
+  border-bottom: 8px solid rgb(16, 16, 16);
+  border-left: 3px solid rgb(16, 16, 16);
+  border-right: 3px solid rgb(16, 16, 16);
   box-sizing: border-box;
 }
 
