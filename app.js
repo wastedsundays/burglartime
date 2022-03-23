@@ -23,24 +23,34 @@
 
 
         init: function() {
+            //pauses everything
             game.pauseGame();
+            //reset level to 1
             game.currentLevel = 1;
+            //reset coins and bills
             game.coinsCollected = 0;
             game.billsCollected = 0;
+            //clears the grid for the board
             $('.grid').html("");
+            //clears the squares array
             squares = [];
+            //creates a board (1, based on current level above)
             createBoard();
             burglarCurrentIndex=239;
             squares[burglarCurrentIndex].classList.add('burglar');
+            //reset the status display on scoreboard
             statusDisplay.innerHTML = "";
+            //sets level indicator on scoreboard to 1
             $('.level-indicator').html(game.currentLevel);
             game.counter = 90;
             game.updateClock();
             game.playerScore = 0;  
-            plyrOneDisplay.innerHTML = game.playerScore;   
+            plyrOneDisplay.innerHTML = game.playerScore;  
+            //reset the timer on the game music 
             soundPriest.currentTime = 0;
             game.updateHiScore();
-            game.switchScreen('#splash-screen');            
+            game.switchScreen('#splash-screen');   
+            game.muteButton();  
 
         },
 
@@ -79,7 +89,9 @@
 
         setPlayerName: function() {
             game.playerName = formText.value;
-            document.querySelector('#player-name').innerHTML = game.playerName+": ";
+            if(game.playerName.length >=1){
+                document.querySelector('#player-name').innerHTML = game.playerName+": ";
+            }else{document.querySelector('#player-name').innerHTML = "Player 1: ";}
         },
         
         //updates the timer on the board
@@ -159,6 +171,24 @@
                 soundPriest.playbackRate = 1.00
             }
         },
+
+        muteButton: function() {
+            if (soundPriest.muted === false) {
+                soundPriest.muted = true;
+                soundBill.muted = true;
+                soundCoin.muted = true;
+                soundWin.muted = true;
+                soundCapture.muted = true;
+                document.getElementById("mute-btn").setAttribute("class","btn btn-warning btn-sm");
+            } else {
+                soundPriest.muted = false;
+                soundBill.muted = false;
+                soundCoin.muted = false;
+                soundWin.muted = false;
+                soundCapture.muted = false;
+                document.getElementById("mute-btn").setAttribute("class","btn btn-success btn-sm");
+            }
+        }
     
         
 
@@ -245,38 +275,34 @@
     })
 
     $('#quitgame-btn').on('click',() => {
-        game.pauseGame();
-        game.currentLevel = 1;
-        game.coinsCollected = 0;
-        game.billsCollected = 0;
-        $('.grid').html("");
-        squares = [];
-        createBoard();
-        burglarCurrentIndex=239;
-        squares[burglarCurrentIndex].classList.add('burglar');
-        statusDisplay.innerHTML = "";
-        $('.level-indicator').html(game.currentLevel);
-        game.counter = 90;
-        game.updateClock();
-        game.playerScore = 0;  
-        plyrOneDisplay.innerHTML = game.playerScore;   
-        soundPriest.currentTime = 0;
-        game.updateHiScore();
-        game.switchScreen('#splash-screen');
-        // setTimeout(game.startGame,3000);
+        // game.pauseGame();
+        // game.currentLevel = 1;
+        // game.coinsCollected = 0;
+        // game.billsCollected = 0;
+        // $('.grid').html("");
+        // squares = [];
+        // createBoard();
+        // burglarCurrentIndex=239;
+        // squares[burglarCurrentIndex].classList.add('burglar');
+        // statusDisplay.innerHTML = "";
+        // $('.level-indicator').html(game.currentLevel);
+        // game.counter = 90;
+        // game.updateClock();
+        // game.playerScore = 0;  
+        // plyrOneDisplay.innerHTML = game.playerScore;   
+        // soundPriest.currentTime = 0;
+        // game.updateHiScore();
+        // game.switchScreen('#splash-screen');
+        game.init();
+
     })
 
 
     //Game Screen Buttons
 
       $('#mute-btn').on('click',()=> {
-          if (soundPriest.muted === false) {
-              soundPriest.muted = true;
-              document.getElementById("mute-btn").setAttribute("class","btn btn-warning btn-sm");
-          } else {
-              soundPriest.muted = false;
-              document.getElementById("mute-btn").setAttribute("class","btn btn-success btn-sm");
-          }
+        game.muteButton();
+
       })
 
       $('#game-control-btn').on('click',() => {
