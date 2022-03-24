@@ -49,6 +49,15 @@ h3 {
   text-align: center;
 }
 
+.score-instructions {
+  display: grid;
+  grid-template-columns: 1fr, 2fr;
+}
+
+.score-instructions img {
+  width: 50px;
+}
+
 #help-screen {
   font-size: 80%;
   width: 90%;

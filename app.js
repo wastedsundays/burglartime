@@ -25,7 +25,8 @@
 
         init: function() {
             //pauses everything
-            game.pauseGame();
+            // game.pauseGame();
+            $("#game-control-btn").html("<i class='fas fa-pause'></i>");
             //reset level to 1
             game.currentLevel = 1;
             //reset coins and bills
