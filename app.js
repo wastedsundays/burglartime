@@ -286,12 +286,14 @@
     $('#retry-btn').on('click',() => {
         game.coinsCollected = 0;
         game.billsCollected = 0;
+        game.currentLevel = 1;
         $('.grid').html("");
         squares = [];
         createBoard();
         burglarCurrentIndex = 239;
         squares[burglarCurrentIndex].classList.add('burglar');
         statusDisplay.innerHTML = "";
+        $('.level-indicator').html(`Lv: ${game.currentLevel}`);
         game.counter = 90;
         game.updateClock();
         game.updateHiScore();    
@@ -299,6 +301,7 @@
         game.totalScore = 0;  
         plyrOneDisplay.innerHTML = game.playerScore;   
         game.switchScreen('#game-screen');
+        soundPriest.currentTime = 0;
         setTimeout(game.startGame,3000);
     })
 
@@ -333,6 +336,13 @@
       })
 
       $('#game-quit-btn').on('click',() => {
+        if(game.isRunning === true){
+            game.pauseGame();
+            $("#game-control-btn").html("<i class='fas fa-play'></i>");
+        }
+      })
+
+      $('#confirm-quit-btn').on('click',() => {
           game.init();
       })
 

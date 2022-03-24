@@ -92,9 +92,9 @@
                     <div class="center-text"><button class="btn btn-success btn-sm" type="button" id="mute-btn" ><i class="fas fa-volume-mute"></i></button></div>
                     <div class="center-text"><button class="btn btn-success btn-sm center-text" id="game-control-btn" type="submit"><i class="fas fa-pause"></i></button></div>
 
-                    <div class="status-display center-text"><p  id="status-display">game status</p></div>
+                    <div class="status-display center-text"><p  id="status-display"></p></div>
                     <div class="center-text"><button class="btn btn-success btn-sm center-text" id="game-help-btn" type="submit"><i class="fas fa-question"></i></button></div>
-                    <div class="center-text"><button class="btn btn-danger btn-sm center-text" id="game-quit-btn" type="submit"><i class="fas fa-power-off"></i></button></div>
+                    <div class="center-text"><button class="btn btn-danger btn-sm center-text" id="game-quit-btn" data-bs-toggle="modal" data-bs-target="#quitModal"><i class="fas fa-power-off"></i></button></div>
                     <!-- <div><button class="btn btn-warning btn-sm" id="game-reset-btn" type="submit"><i class="fas fa-recycle"></i></button></div> -->
                     <div class="center-text level-indicator"><p>Lv: 1</p></div>
 
@@ -104,6 +104,23 @@
             <div class="grid"></div>
             <!-- Considered adding a boss button -->
             <!-- <div><button class="btn btn-danger btn-sm" id="boss-btn" type="submit">Excessive Force</button></div>     -->
+
+            <div class="modal fade" id="quitModal" tabindex="-1" aria-labelledby="quitModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="quitModalLabel">Quit Game</h5>
+                    </div>
+                    <div class="modal-body">
+                    Are you sure?
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="more-info btn btn-danger btn-sm" id="confirm-quit-btn" data-bs-dismiss="modal">Quit</button>
+                    <button type="button" class="btn btn-success btn-sm" data-bs-dismiss="modal">Whoops</button>
+                    </div>
+                </div>
+                </div>
+            </div>
 
                 <audio id="audio-coin" loop="false">
                     <source src="sounds/pickupCoin.wav" type="audio/wav">
