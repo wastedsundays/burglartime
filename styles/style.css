@@ -50,12 +50,19 @@ h3 {
 }
 
 .score-instructions {
-  display: grid;
-  grid-template-columns: 1fr, 2fr;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
 }
 
 .score-instructions img {
   width: 50px;
+  display: inline-block;
+}
+
+.score-instructions p {
+  display: inline-block;
 }
 
 #help-screen {
