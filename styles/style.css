@@ -4,14 +4,14 @@ body {
   /* font-size: 75%; */
   color: gold;
   margin: 0 auto;
-  background-image: url("../images/backdrop.jpg");
+  background-image: url("../images/backdrop-pix.jpg");
   background-size: 100%;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
 .captured {
-  background-image: url("../images/backdrop-caught.jpg");
+  background-image: url("../images/backdrop-caught-pix.jpg");
 }
 
 a {
@@ -39,6 +39,10 @@ h3 {
   bottom: 0%;
   text-align: center;
   width: 950px;
+}
+#footer-box {
+  width: 300px;
+  margin: 0 auto;
 }
 
 #form-text {
@@ -255,10 +259,19 @@ h3 {
 
 /* recap page */
 
+#recap-screen {
+  text-align: center;
+}
+
 table {
   table-layout: auto;
   width: 370px;
   border-collapse: collapse;
+  margin: 10px auto;
+}
+
+table td:nth-child(1) {
+  text-align: left;
 }
 
 table td:nth-child(2) {
@@ -278,7 +291,6 @@ table td:nth-child(2) {
 }
 
 #credits-scroll {
-  font-size: 80%;
   width: 90%;
   margin: 1rem auto;
   -ms-overflow-style: none;
@@ -290,6 +302,10 @@ table td:nth-child(2) {
 
 #credits-scroll::-webkit-scrollbar {
   display: none;
+}
+
+#credits-screen-close-button {
+  margin: 3rem;
 }
 
 .role {

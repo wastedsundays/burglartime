@@ -119,6 +119,8 @@
                 setTimeout(function(){statusDisplay.innerHTML = 'Time Expired'},100)
                 document.getElementById('final-score').innerHTML = game.playerScore;
                 setTimeout(function(){game.switchScreen('#end-screen')},3000);
+                setTimeout(function(){document.body.setAttribute("class","captured")},3000);
+                setTimeout(function(){soundGameOver.play()},3000);
             }
         },
 
@@ -237,7 +239,7 @@
         },
 
         updateRecap: function() {
-            document.getElementById('recap-message').innerHTML = `Level ${game.currentLevel} complete!`;
+            document.getElementById('recap-message').innerHTML = `Vault Level ${game.currentLevel} complete!`;
             game.totalScore = game.playerScore + (game.counter*10)
             document.getElementById('level-score').innerHTML = game.playerScore;
             document.getElementById('time-left').innerHTML = (game.counter*10);
@@ -268,6 +270,7 @@
     const height = 21;
 
     // event listeners for the difficulty buttons. Set difficulty multiplier (for cop speeds), switches to game screen, and starts a 5 second timer to start gameplay
+    //no intention of making in-game difficulty switches possible, so I decided to hard-code the difficulty modifier number.
 
     //splash screen difficulty choosers
     $('#easy-btn').on('click',() => {
@@ -297,6 +300,7 @@
         setTimeout(game.startGame,3000);
     })  
 
+    //splash screen instructions buttons
     $('#instructions-button').on('click',() => {
         soundButtonClick.play();
         game.switchScreen('#help-screen');
@@ -308,7 +312,7 @@
         game.switchScreen(game.previousScreen);
     })  
 
-    
+    //continue button for successful level clear to advance to next level
     $('#continue-btn').on('click',() => {
         soundButtonClick.play();
         game.pauseGame();
@@ -321,6 +325,7 @@
         setTimeout(game.startGame,3000);
     })
 
+    //retry button on loss, goes back to start with same difficulty settings and clears score
     $('#retry-btn').on('click',() => {
         soundButtonClick.play();
         game.currentLevel = 1;
@@ -335,6 +340,7 @@
         setTimeout(game.startGame,3000); 
     })
 
+    // goes back to splash screen and defaults everything (except 'hi score')
     $('#quitgame-btn').on('click',() => {
         soundButtonClick.play();
         game.init();
@@ -342,23 +348,23 @@
 
 
     //Game Screen Buttons
-
+    //mutes sound
     $('#mute-btn').on('click',()=> {
         soundButtonClick.play();
         game.muteButton();
     })
 
+    //play/pause button
     $('#game-control-btn').on('click',() => {
         soundButtonClick.play();
           if (game.isRunning === true) {
               game.pauseGame();
-            //   $("#game-control-btn").html("<i class='fas fa-play'></i>");
           } else {
               game.resumeGame();
-            //   $("#game-control-btn").html("<i class='fas fa-pause'></i>");
           }
     })
 
+    //help screen
     $('#game-help-btn').on('click',() => {
         soundButtonClick.play();
         if(game.isRunning === true){
@@ -369,6 +375,7 @@
       game.previousScreen = '#game-screen';
     })
 
+    //quit game button. Pauses game (if running), and brings up confirmation modal
     $('#game-quit-btn').on('click',() => {
         soundButtonClick.play();
         if(game.isRunning === true){
@@ -377,6 +384,7 @@
         }
     })
 
+    //modal quit confirmation button that resets the works
     $('#confirm-quit-btn').on('click',() => {
         soundButtonClick.play();
           game.init();
@@ -384,11 +392,7 @@
 
 
 
-    //   credits screen buttons
-    $('.credits-link').on('click',() => {
-      game.switchScreen('#credits-screen');
-      })
-
+    //closes the credits page if you win the game. Stops the end game music.
     $('#credits-close-btn').on('click',() => {
         soundButtonClick.play();
           game.switchScreen('#splash-screen');
@@ -396,8 +400,10 @@
           game.init();
     })
 
+    //set the game start screen
     game.switchScreen('#splash-screen');
   
+    //cops array
     let cops = [];
 
 
@@ -645,15 +651,11 @@
             
         }
 
-
+        
         createBoard()
 
    
-        //starting position of burglar - 239 is vault squares
-  
-        // let burglarCurrentIndex = 239;
-
-        
+      
         //move the burglar
         /* left will move -1, right +1, up -32 (width), down 32 (width). Width is defined above, as the width of the gameboard.
         32 represents the square directly below the current square. -32 represents the square above. */
@@ -718,15 +720,14 @@
 
                         cops.forEach(cop => clearInterval(cop.timerId));
                         setTimeout(function(){cops.forEach(cop => moveCop(cop))},(3000));
-                        // cops.forEach(cop => moveCop(cop));
+
                     }
                 }
         }
 
             //create cop template
-function createCops(){
-            // let cops = [];
-
+                function createCops(){
+            
                 class Cop {
                     constructor(className, startIndex, speed) {
                         this.className = className
@@ -776,16 +777,6 @@ function createCops(){
                     }, cop.speed)                
                 }
 
-                // function updateRecap() {
-                //     document.getElementById('recap-message').innerHTML = `Level ${game.currentLevel} complete!`;
-                //     game.totalScore = game.playerScore + (game.counter*10)
-                //     document.getElementById('level-score').innerHTML = game.playerScore;
-                //     document.getElementById('time-left').innerHTML = (game.counter*10);
-                //     document.getElementById('new-total-score').innerHTML = game.totalScore;
-                //     document.getElementById('ending-score').innerHTML = game.playerScore;
-                //     document.getElementById('final-time-left').innerHTML = (game.counter*10);
-                //     document.getElementById('final-total-score').innerHTML = game.totalScore;  
-                // }
 
                 soundCoin.preLoad = true;
                 soundCoin.loop = false;
