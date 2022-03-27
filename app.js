@@ -21,6 +21,7 @@
         currentScreen: "#splash-screen",
         currentLevel: 1,
         previousScreen: '',
+        finalLevel: 1,
 
 
         init: function() {
@@ -51,10 +52,9 @@
             //reset the timer on the game music 
             soundPriest.currentTime = 0;
             game.updateHiScore();
+            document.body.setAttribute("class","");
             game.switchScreen('#splash-screen');
             game.unMute();   
-
-
         },
 
         switchScreen: function (newScreen) {
@@ -80,6 +80,7 @@
             game.playerScore = game.totalScore;  
             plyrOneDisplay.innerHTML = game.playerScore;   
             soundPriest.play();
+            $("#game-control-btn").html("<i class='fas fa-pause'></i>");
         },
 
         //starts the clock
@@ -130,14 +131,18 @@
              }
         },
 
-        //checks if board is cleared AND burglar is back in the vault door
+        //checks if board is cleared AND burglar is back in the vault door. decide on which end screen
         checkVictory: function() {
             if (game.coinsCollected === totalCoins && game.billsCollected === totalBills && burglarCurrentIndex === 239) {
                 game.pauseGame();
                 statusDisplay.innerHTML = 'Vault Cleared';
                 soundWin.play();
-                updateRecap();
-                setTimeout(function(){game.switchScreen('#recap-screen')},3000);
+                game.updateRecap();
+                    if(game.currentLevel === game.finalLevel){
+                        setTimeout(function(){game.switchScreen('#credits-screen')},3000); 
+                        setTimeout(function(){soundCredits.play()},3000);
+                    } else { setTimeout(function(){game.switchScreen('#recap-screen')},3000);
+                }
             }
         },
 
@@ -149,6 +154,7 @@
             clearInterval(game.intervalId);
             soundPriest.pause();
             statusDisplay.innerHTML = "paused";
+            $("#game-control-btn").html("<i class='fas fa-play'></i>");
         },
         
         //resumes everything (cops, key presses, music, timer)
@@ -158,6 +164,7 @@
             game.startTimer();
             soundPriest.play();
             statusDisplay.innerHTML = "";
+            $("#game-control-btn").html("<i class='fas fa-pause'></i>");
         },
 
         //check for captured - called in both the moveCop and moveBurglar functions
@@ -168,16 +175,33 @@
                 setTimeout(function(){statusDisplay.innerHTML = 'Captured'},500) //displays "captured" on status area
                 document.getElementById('final-score').innerHTML = game.playerScore; //updates final score with player score
                 setTimeout(function(){game.switchScreen('#end-screen')},3000); //pauses before switching to end screen
+                setTimeout(function(){document.body.setAttribute("class","captured")},3000);
+                setTimeout(function(){soundGameOver.play()},3000);
             }
         },
 
         checkTimer: function() {
             //this speeds up the music for the final 20 seconds of the round as a warning
             if (game.counter <= 20) {
-                soundPriest.playbackRate = 1.15
+                soundPriest.playbackRate = 1.15;
             } else {
-                soundPriest.playbackRate = 1.00
+                soundPriest.playbackRate = 1.00;
             }
+        },
+
+        rebuildLevel: function() {
+            document.body.setAttribute("class","");
+            game.coinsCollected = 0;
+            game.billsCollected = 0;
+            $('.grid').html("");
+            squares = [];
+            createBoard();
+            burglarCurrentIndex = 239;
+            squares[burglarCurrentIndex].classList.add('burglar');
+            statusDisplay.innerHTML = "";
+            $('.level-indicator').html(`Lv: ${game.currentLevel}`);
+            game.counter = 90;
+            game.updateClock();
         },
 
         muteButton: function() {
@@ -188,6 +212,8 @@
                 soundCoin.muted = true;
                 soundWin.muted = true;
                 soundCapture.muted = true;
+                soundCredits.muted = true;
+                soundButtonClick.muted = true;
                 document.getElementById("mute-btn").setAttribute("class","btn btn-warning btn-sm");
             } else {
                 soundPriest.muted = false;
@@ -195,6 +221,8 @@
                 soundCoin.muted = false;
                 soundWin.muted = false;
                 soundCapture.muted = false;
+                soundCredits.muted = false;
+                soundButtonClick.muted = false;
                 document.getElementById("mute-btn").setAttribute("class","btn btn-success btn-sm");
             }
         },
@@ -205,15 +233,26 @@
             soundCoin.muted = false;
             soundWin.muted = false;
             soundCapture.muted = false;
-            soundDoor.muted = false;
+            soundButtonClick.muted = false;
             document.getElementById("mute-btn").setAttribute("class","btn btn-success btn-sm");
-        }
-    
-        
+        },
 
+        updateRecap: function() {
+            document.getElementById('recap-message').innerHTML = `Level ${game.currentLevel} complete!`;
+            game.totalScore = game.playerScore + (game.counter*10)
+            document.getElementById('level-score').innerHTML = game.playerScore;
+            document.getElementById('time-left').innerHTML = (game.counter*10);
+            document.getElementById('new-total-score').innerHTML = game.totalScore;
+            document.getElementById('ending-score').innerHTML = game.playerScore;
+            document.getElementById('final-time-left').innerHTML = (game.counter*10);
+            document.getElementById('final-total-score').innerHTML = game.totalScore;  
+        }
+        
     }
     //end of game
-
+    const soundButtonClick = document.getElementById('audio-click');
+    const soundGameOver = document.getElementById('audio-gameover');
+    const soundCredits = document.getElementById('credits-music');
     const soundCoin = document.getElementById('audio-coin');
     const soundBill = document.getElementById('audio-bill');
     const soundPriest = document.getElementById('audio-music');
@@ -233,50 +272,49 @@
 
     //splash screen difficulty choosers
     $('#easy-btn').on('click',() => {
+        soundButtonClick.play();
         game.difficulty = 1;
+        game.finalLevel = 4;
         game.setPlayerName();
         game.switchScreen('#game-screen');
         setTimeout(game.startGame,3000);
     })
 
     $('#med-btn').on('click',() => {
+        soundButtonClick.play();
         game.difficulty = 1.5;
+        game.finalLevel = 5;
         game.setPlayerName();
         game.switchScreen('#game-screen');
         setTimeout(game.startGame,3000);
     })  
 
     $('#hard-btn').on('click',() => {
+        soundButtonClick.play();
         game.difficulty = 2.2;
+        game.finalLevel = 5;
         game.setPlayerName();
         game.switchScreen('#game-screen');
         setTimeout(game.startGame,3000);
     })  
 
     $('#instructions-button').on('click',() => {
+        soundButtonClick.play();
         game.switchScreen('#help-screen');
         game.previousScreen = '#splash-screen';
     })  
 
     $('#help-close-btn').on('click',() => {
+        soundButtonClick.play();
         game.switchScreen(game.previousScreen);
     })  
 
     
-
     $('#continue-btn').on('click',() => {
+        soundButtonClick.play();
         game.pauseGame();
         game.currentLevel ++;
-        game.coinsCollected = 0;
-        game.billsCollected = 0;
-        $('.grid').html("");
-        squares = [];
-        createBoard();
-        squares[burglarCurrentIndex].classList.add('burglar');
-        statusDisplay.innerHTML = "";
-        $('.level-indicator').html(`Lv: ${game.currentLevel}`);
-        game.counter = 90;
-        game.updateClock();
+        game.rebuildLevel();
         game.playerScore = game.totalScore;  
         plyrOneDisplay.innerHTML = game.playerScore;   
         game.updateHiScore();
@@ -285,89 +323,94 @@
     })
 
     $('#retry-btn').on('click',() => {
-        game.coinsCollected = 0;
-        game.billsCollected = 0;
+        soundButtonClick.play();
         game.currentLevel = 1;
-        $('.grid').html("");
-        squares = [];
-        createBoard();
-        burglarCurrentIndex = 239;
-        squares[burglarCurrentIndex].classList.add('burglar');
-        statusDisplay.innerHTML = "";
-        $('.level-indicator').html(`Lv: ${game.currentLevel}`);
-        game.counter = 90;
-        game.updateClock();
+        game.rebuildLevel();
+        $("#game-control-btn").html("<i class='fas fa-pause'></i>");
         game.updateHiScore();    
         game.playerScore = 0;
         game.totalScore = 0;  
         plyrOneDisplay.innerHTML = game.playerScore;   
         game.switchScreen('#game-screen');
         soundPriest.currentTime = 0;
-        setTimeout(game.startGame,3000);
+        setTimeout(game.startGame,3000); 
     })
 
     $('#quitgame-btn').on('click',() => {
+        soundButtonClick.play();
         game.init();
     })
 
 
     //Game Screen Buttons
 
-      $('#mute-btn').on('click',()=> {
+    $('#mute-btn').on('click',()=> {
+        soundButtonClick.play();
         game.muteButton();
-      })
+    })
 
-      $('#game-control-btn').on('click',() => {
+    $('#game-control-btn').on('click',() => {
+        soundButtonClick.play();
           if (game.isRunning === true) {
               game.pauseGame();
-              $("#game-control-btn").html("<i class='fas fa-play'></i>");
+            //   $("#game-control-btn").html("<i class='fas fa-play'></i>");
           } else {
               game.resumeGame();
-              $("#game-control-btn").html("<i class='fas fa-pause'></i>");
+            //   $("#game-control-btn").html("<i class='fas fa-pause'></i>");
           }
-      })
+    })
 
-      $('#game-help-btn').on('click',() => {
+    $('#game-help-btn').on('click',() => {
+        soundButtonClick.play();
         if(game.isRunning === true){
             game.pauseGame();
             $("#game-control-btn").html("<i class='fas fa-play'></i>");
-        }
+         }
       game.switchScreen('#help-screen');
       game.previousScreen = '#game-screen';
-      })
+    })
 
-      $('#game-quit-btn').on('click',() => {
+    $('#game-quit-btn').on('click',() => {
+        soundButtonClick.play();
         if(game.isRunning === true){
             game.pauseGame();
             $("#game-control-btn").html("<i class='fas fa-play'></i>");
         }
-      })
+    })
 
-      $('#confirm-quit-btn').on('click',() => {
+    $('#confirm-quit-btn').on('click',() => {
+        soundButtonClick.play();
           game.init();
+    })
+
+
+
+    //   credits screen buttons
+    $('.credits-link').on('click',() => {
+      game.switchScreen('#credits-screen');
       })
 
-    // A bad idea :-)
+    $('#credits-close-btn').on('click',() => {
+        soundButtonClick.play();
+          game.switchScreen('#splash-screen');
+          soundCredits.pause();
+          game.init();
+    })
 
-    //   $('#boss-btn').on('click',() => {
-    //       createCops();
-    //   })
+    game.switchScreen('#splash-screen');
+  
+    let cops = [];
 
-      game.switchScreen('#splash-screen');
-    
 
-      let cops = [];
 
     //elements
-
-
 
     //layout of grid and contents of each square
      const layout1 = [
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,1,1,1,1,1,0,0,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,0,0,1,1,1,1,1,0,
+        0,2,1,1,1,1,0,0,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,0,0,1,1,1,1,2,0,
         0,1,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,1,0,
-        0,1,0,0,0,2,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,1,1,2,0,0,0,1,0,
+        0,1,0,0,0,1,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,1,1,1,0,0,0,1,0,
         0,1,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,1,0,
         0,1,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,1,0,
         0,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,0,
@@ -379,11 +422,11 @@
         0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,
         0,1,0,0,0,1,0,0,0,1,1,1,1,1,1,0,0,1,1,1,1,1,1,0,0,0,1,0,0,0,1,0,
         0,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,1,1,1,0,
-        0,1,0,0,0,2,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,2,0,0,0,1,0,
+        0,1,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,0,
         0,1,0,0,0,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,0,0,1,0,
         0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,
         0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,
-        0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
+        0,2,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,2,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         ]
      
@@ -402,20 +445,20 @@
         0,1,0,0,0,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,1,0,
         0,1,0,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,
         0,1,0,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,
-        0,2,1,1,1,1,0,0,0,1,1,1,1,1,1,0,0,1,1,1,1,1,1,0,0,0,1,1,1,1,2,0,
+        0,1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,0,1,1,1,1,1,1,0,0,0,1,1,1,1,1,0,
         0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,
         0,1,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,0,
         0,1,0,0,0,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,0,0,1,0,
         0,1,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,1,0,
-        0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,
+        0,2,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,2,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         ]
 
     const layout3 = [
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,
+        0,2,1,1,1,0,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,0,1,1,1,2,0,
         0,1,0,0,1,0,1,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,1,0,1,0,0,1,0,
-        0,2,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,0,
+        0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
         0,1,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,1,0,
         0,1,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,0,0,1,1,1,1,1,0,0,0,0,0,0,1,0,
         0,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,0,
@@ -426,20 +469,20 @@
         0,1,0,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,0,1,0,
         0,1,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,1,0,
         0,1,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,1,0,
-        0,1,1,1,1,2,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,2,1,1,1,1,0,
+        0,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,
         0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,
         0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,
         0,1,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,1,1,1,1,0,
         0,1,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,
-        0,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,0,
+        0,2,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,2,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     ]
 
     const layout4 = [
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,1,1,1,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,0,1,1,1,0,
+        0,2,1,1,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,0,1,1,2,0,
         0,1,0,1,0,1,0,0,1,0,1,0,0,1,1,1,1,1,1,0,0,1,0,1,0,0,1,0,1,0,1,0,
-        0,1,0,1,1,2,1,1,1,0,1,0,0,1,0,0,1,0,1,0,0,1,0,1,1,1,2,1,1,0,1,0,
+        0,1,0,1,1,1,1,1,1,0,1,0,0,1,0,0,1,0,1,0,0,1,0,1,1,1,1,1,1,0,1,0,
         0,1,0,0,0,1,0,0,1,1,1,1,1,1,0,0,1,0,1,1,1,1,1,1,0,0,1,0,0,0,1,0,
         0,1,0,0,0,1,0,0,1,0,0,0,0,1,0,0,1,0,1,0,0,0,0,1,0,0,1,0,0,0,1,0,
         0,1,1,1,1,1,0,0,1,1,1,0,0,1,1,1,1,1,1,0,0,1,1,1,0,0,1,1,1,1,1,0,
@@ -447,7 +490,7 @@
         0,0,1,0,0,1,1,1,1,0,1,1,1,0,0,1,0,0,0,1,1,1,0,1,1,1,1,0,0,1,0,0,
         0,0,1,0,0,1,0,0,1,0,0,0,1,1,1,1,1,1,1,1,0,0,0,1,0,0,1,0,0,1,0,0,
         0,1,1,1,1,1,0,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1,0,0,1,1,1,1,1,0,
-        0,2,0,1,0,0,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,0,0,0,0,1,0,2,0,
+        0,1,0,1,0,0,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,0,0,0,0,1,0,1,0,
         0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,0,
         0,1,0,0,1,0,0,0,0,1,1,1,1,1,1,0,0,1,1,1,1,1,1,0,0,0,0,1,0,0,1,0,
         0,1,1,1,1,1,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,1,0,0,0,1,1,1,1,1,0,
@@ -455,15 +498,15 @@
         0,1,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,0,1,1,1,1,1,0,0,0,1,1,1,1,1,0,
         0,1,0,0,0,1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,1,0,
         0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,
-        0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
+        0,2,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,2,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     ]
 
     const layout5 = [
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,1,1,1,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,0,1,1,1,0,
+        0,2,1,1,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,0,1,1,2,0,
         0,1,0,1,0,1,0,0,1,0,1,0,0,1,1,1,1,1,1,0,0,1,0,1,0,0,1,0,1,0,1,0,
-        0,1,1,1,1,2,1,1,1,0,1,0,0,1,0,0,1,0,1,0,0,1,0,1,1,1,2,1,1,1,1,0,
+        0,1,1,1,1,1,1,1,1,0,1,0,0,1,0,0,1,0,1,0,0,1,0,1,1,1,1,1,1,1,1,0,
         0,1,0,1,0,1,0,0,1,1,1,1,1,1,0,0,1,0,1,1,1,1,1,1,0,0,1,0,1,0,1,0,
         0,1,0,1,0,1,1,1,1,0,0,1,0,1,0,0,1,0,1,0,1,0,0,1,0,0,1,0,1,0,1,0,
         0,1,1,1,1,1,0,0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,0,0,1,1,1,1,1,0,
@@ -471,7 +514,7 @@
         0,0,1,1,1,1,1,1,1,0,1,1,1,0,0,1,0,0,0,1,1,1,0,1,1,1,1,1,1,1,0,0,
         0,0,1,0,0,1,0,0,1,0,0,0,1,1,1,1,1,1,1,1,0,0,0,1,0,0,1,0,0,1,0,0,
         0,1,1,1,1,1,0,0,1,1,0,0,1,0,0,0,0,0,0,1,0,0,1,1,0,0,1,1,1,1,1,0,
-        0,2,0,0,1,0,0,0,0,1,1,1,1,1,1,0,0,1,1,1,1,1,1,0,0,0,0,1,0,0,2,0,
+        0,1,0,0,1,0,0,0,0,1,1,1,1,1,1,0,0,1,1,1,1,1,1,0,0,0,0,1,0,0,1,0,
         0,1,1,1,1,1,1,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,0,
         0,1,0,0,1,0,0,1,0,1,1,1,1,1,1,0,0,1,1,1,1,1,1,0,1,0,0,1,0,0,1,0,
         0,1,1,1,1,1,0,1,0,1,0,0,1,0,1,1,1,1,0,1,0,0,1,0,1,0,1,1,1,1,1,0,
@@ -479,7 +522,7 @@
         0,1,1,1,1,1,0,0,0,1,1,1,1,1,0,1,0,0,1,1,1,1,1,0,0,0,1,1,1,1,1,0,
         0,1,0,0,0,1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,1,0,
         0,1,0,0,0,1,0,0,0,1,1,1,1,1,0,0,1,0,1,1,1,1,1,0,0,0,1,0,0,0,1,0,
-        0,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,0,
+        0,2,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,2,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     ]
 
@@ -734,17 +777,16 @@ function createCops(){
                     }, cop.speed)                
                 }
 
-
-
-
-                function updateRecap() {
-                    document.getElementById('recap-message').innerHTML = `Level ${game.currentLevel} complete!`;
-                    game.totalScore = game.playerScore + (game.counter*10)
-                    document.getElementById('level-score').innerHTML = game.playerScore;
-                    document.getElementById('time-left').innerHTML = (game.counter*10);
-                    document.getElementById('new-total-score').innerHTML = game.totalScore; 
-
-                }
+                // function updateRecap() {
+                //     document.getElementById('recap-message').innerHTML = `Level ${game.currentLevel} complete!`;
+                //     game.totalScore = game.playerScore + (game.counter*10)
+                //     document.getElementById('level-score').innerHTML = game.playerScore;
+                //     document.getElementById('time-left').innerHTML = (game.counter*10);
+                //     document.getElementById('new-total-score').innerHTML = game.totalScore;
+                //     document.getElementById('ending-score').innerHTML = game.playerScore;
+                //     document.getElementById('final-time-left').innerHTML = (game.counter*10);
+                //     document.getElementById('final-total-score').innerHTML = game.totalScore;  
+                // }
 
                 soundCoin.preLoad = true;
                 soundCoin.loop = false;
@@ -756,9 +798,15 @@ function createCops(){
                 soundCapture.loop = false;
                 soundWin.loop = false;
                 soundWin.preLoad = true;
+                soundCredits.loop = false;
+                soundCredits.preLoad = true;
+                soundGameOver.loop = false;
+                soundGameOver.preLoad = true;
+                soundButtonClick.loop = false;
+                soundButtonClick.preLoad = true;
 
                 
         
-        // document.addEventListener('keydown',moveBurglar);
+
 
 // })

@@ -4,10 +4,14 @@ body {
   /* font-size: 75%; */
   color: gold;
   margin: 0 auto;
-  background-image: url("../images/Untitled-1.jpg");
+  background-image: url("../images/backdrop.jpg");
   background-size: 100%;
   background-repeat: no-repeat;
   background-attachment: fixed;
+}
+
+.captured {
+  background-image: url("../images/backdrop-caught.jpg");
 }
 
 a {
@@ -24,6 +28,8 @@ h3 {
   font-size: 1rem;
   padding-top: 3rem;
 }
+
+/* splash screen styles */
 #splash-screen button {
   font-size: 75%;
 }
@@ -49,21 +55,12 @@ h3 {
   text-align: center;
 }
 
-.score-instructions {
-  width: 500px;
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-}
-
-.score-instructions img {
-  width: 50px;
+.credits-link {
   display: inline-block;
 }
+/* end of the splash screen styles */
 
-.score-instructions p {
-  display: inline-block;
-}
+/* instructions page */
 
 #help-screen {
   font-size: 80%;
@@ -84,6 +81,28 @@ h3 {
   color: white;
 }
 
+#help-screen-close-button {
+  float: right;
+  position: sticky;
+  top: 0;
+}
+
+.score-instructions {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.score-instructions img {
+  width: 50px;
+  display: inline-block;
+}
+
+.score-instructions p {
+  display: inline-block;
+}
+
 #moving-around {
   display: flex;
   align-items: center;
@@ -99,16 +118,14 @@ h3 {
   padding-left: 0.5rem;
   padding-right: 2rem;
 }
-#help-screen-close-button {
-  float: right;
-  position: sticky;
-  top: 0;
-}
+
+/* end of the instructions page */
 
 .center-text {
   text-align: center;
 }
 
+/* in-game content */
 .game-wrapper {
   width: 950px;
   height: 100vh;
@@ -131,10 +148,8 @@ h3 {
 .scoreboard {
   font-size: 75%;
   height: 80px;
-  /* margin: 20px 38px 0 38px; */
   padding: 5px 16px 0 16px;
   display: grid;
-  /* justify-items: center; */
   grid-template-columns: 60px 120px 120px auto 120px 120px 60px;
   grid-template-rows: 35px auto;
 }
@@ -159,8 +174,6 @@ h3 {
 .grid {
   display: flex;
   flex-wrap: wrap;
-  /* width: 768px; */
-  /* height: 504px; */
   width: 928px;
   height: 609px;
   border: 1 px solid rgb(16, 16, 16);
@@ -168,8 +181,6 @@ h3 {
 }
 
 .grid div {
-  /* width: 24px;
-  height: 24px; */
   width: 29px;
   height: 29px;
 }
@@ -191,12 +202,7 @@ h3 {
 }
 
 .dollar-bill {
-  background-color: limegreen;
-  border-top: 8px solid rgb(16, 16, 16);
-  border-bottom: 8px solid rgb(16, 16, 16);
-  border-left: 3px solid rgb(16, 16, 16);
-  border-right: 3px solid rgb(16, 16, 16);
-  box-sizing: border-box;
+  background-image: url("../images/billStack.jpg");
 }
 
 .vault-door {
@@ -209,11 +215,9 @@ h3 {
   border: 0;
   background-image: url("../images/burglar.png");
   z-index: 10;
-  /* background-color: #000; */
 }
 
 .barbrady {
-  /* background-color: goldenrod; */
   border-radius: 0;
   border: 0;
   background-image: url("../images/barbrady.jpg");
@@ -224,7 +228,7 @@ h3 {
 .wiggum {
   border-radius: 0;
   background-color: blue;
-  background-image: url("../images/barbrady.jpg");
+  background-image: url("../images/wiggum.jpg");
   border: 0px;
   z-index: 99;
 }
@@ -232,7 +236,7 @@ h3 {
 .drebin {
   border-radius: 0;
   background-color: wheat;
-  background-image: url("../images/barbrady.jpg");
+  background-image: url("../images/drebin.jpg");
   border: 0px;
   z-index: 98;
 }
@@ -240,14 +244,16 @@ h3 {
 .kimble {
   border-radius: 0;
   background-color: red;
-  background-image: url("../images/barbrady.jpg");
+  background-image: url("../images/kimble.jpg");
   border: 0px;
   z-index: 97;
 }
 
 .vault-open {
-  background-color: white;
+  background-image: url("../images/vault-open.jpg");
 }
+
+/* recap page */
 
 table {
   table-layout: auto;
@@ -257,4 +263,56 @@ table {
 
 table td:nth-child(2) {
   text-align: end;
+}
+
+/* you're a loser page */
+
+#end-screen {
+  text-align: center;
+  padding: 50px;
+}
+
+/* credits page */
+#congrats-message {
+  text-align: center;
+}
+
+#credits-scroll {
+  font-size: 80%;
+  width: 90%;
+  margin: 1rem auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow: auto;
+  height: 95vh;
+  height: 18rem;
+}
+
+.role {
+  margin-bottom: 0;
+  font-size: 75%;
+}
+
+.name {
+  color: white;
+}
+
+.name a {
+  color: white;
+}
+
+.name a:visited {
+  color: white;
+}
+
+.name a:hover {
+  color: gold;
+}
+
+h4 {
+  margin-top: 8rem;
+}
+
+h5 {
+  margin-bottom: 3rem;
 }
