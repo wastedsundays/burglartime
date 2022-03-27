@@ -50,6 +50,7 @@
             plyrOneDisplay.innerHTML = game.playerScore;  
             //reset the timer on the game music 
             soundPriest.currentTime = 0;
+            soundCredits.currentTime = 0;
             game.updateHiScore();
             document.body.setAttribute("class","");
             game.switchScreen('#splash-screen');
