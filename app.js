@@ -1,6 +1,5 @@
-// document.addEventListener('DOMContentLoaded', () => {
-
 "use strict";
+    
     let burglarCurrentIndex = 239;
 
     const game = {
@@ -805,8 +804,4 @@ function createCops(){
                 soundButtonClick.loop = false;
                 soundButtonClick.preLoad = true;
 
-                
-        
-
-
-// })
+$(document).ready(game.init);

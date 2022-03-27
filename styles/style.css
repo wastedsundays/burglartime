@@ -288,6 +288,10 @@ table td:nth-child(2) {
   height: 18rem;
 }
 
+#credits-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 .role {
   margin-bottom: 0;
   font-size: 75%;
